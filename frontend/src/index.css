@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root {
+  --bg-deep: #020408;
+  --bg-dark: #060d18;
+  --bg-card: #0a1628;
+  --bg-card2: #0d1f3c;
+  --accent-blue: #00aaff;
+  --accent-cyan: #00ffcc;
+  --accent-red: #ff3366;
+  --accent-amber: #ffaa00;
+  --accent-green: #00ff88;
+  --text-primary: #e8f4ff;
+  --text-secondary: #7a9fc2;
+  --text-muted: #3d5a7a;
+  --border: #0f2440;
+  --glow-blue: 0 0 20px rgba(0, 170, 255, 0.4);
+  --glow-red: 0 0 30px rgba(255, 51, 102, 0.6);
+  --glow-green: 0 0 20px rgba(0, 255, 136, 0.4);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: var(--accent-blue); border-radius: 2px; }
+
+/* === ANIMATIONS === */
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+@keyframes radar-sweep {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+@keyframes slide-in {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes hop-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0.8); }
+  70% { box-shadow: 0 0 0 12px rgba(0, 255, 204, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes sos-btn-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 51, 102, 0.7), inset 0 0 30px rgba(255, 51, 102, 0.3); }
+  70% { box-shadow: 0 0 0 30px rgba(255, 51, 102, 0), inset 0 0 30px rgba(255, 51, 102, 0.1); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 51, 102, 0), inset 0 0 30px rgba(255, 51, 102, 0.3); }
+}
+
+@keyframes scanline {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
