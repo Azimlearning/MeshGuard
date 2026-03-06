@@ -1,4 +1,4 @@
-# Civil-Mesh (Edge-Triage) Implementation Plan
+# MeshGuard (Edge-Triage) Implementation Plan
 
 **Goal:** Build a hybrid simulator demonstrating decentralized swarm intelligence through a local Node.js server, visually plotting SOS signals jumping between virtual nodes on a command dashboard while responding in real-time to a mobile web app triggered by the user's phone.
 **Architecture / Approach:** A single monorepo backend (Node.js/Express) serving an interactive dashboard (React/MapGL) and a mobile-view endpoint. Real-time connections are handled with Socket.io. The backend runs a mock P2P routing algorithm on a generated graph of virtual "citizen nodes".

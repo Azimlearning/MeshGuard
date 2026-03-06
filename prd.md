@@ -1,6 +1,6 @@
-# Civil-Mesh — Product Requirements Document (PRD)
+# MeshGuard — Product Requirements Document (PRD)
 
-**Project Name:** Civil-Mesh (Edge-Triage)  
+**Project Name:** MeshGuard (Edge-Triage)  
 **Hackathon:** V-Hack 2026  
 **Version:** 1.0  
 **Date:** 2026-03-06  
@@ -18,7 +18,7 @@
 
 When natural disasters, power outages, or civil emergencies strike, centralized communication infrastructure (cell towers, the internet) is often the first to fail. Citizens cannot call for help. First responders are blind.
 
-**Civil-Mesh** simulates a solution: a peer-to-peer mesh protocol where each citizen's device becomes a relay node, collectively routing distress signals to the nearest First Responder HQ — even without the internet.
+**MeshGuard** simulates a solution: a peer-to-peer mesh protocol where each citizen's device becomes a relay node, collectively routing distress signals to the nearest First Responder HQ — even without the internet.
 
 ---
 

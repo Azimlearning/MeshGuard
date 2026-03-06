@@ -9,6 +9,10 @@ export default defineConfig({
     host: true, // expose to local network so iPhone can access via IP
     proxy: {
       '/status': 'http://localhost:3001',
+      '/socket.io': {
+        target: 'http://localhost:3001',
+        ws: true,
+      },
     },
   },
 });

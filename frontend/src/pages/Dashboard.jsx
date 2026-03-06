@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Polyline, useMap } from 'react-leaflet';
 import { io } from 'socket.io-client';
 
-const SOCKET_URL = 'http://localhost:3001';
-
 // ── Animated trace component: draws hops one by one ──────────────────────────
 function TraceAnimator({ trace }) {
     const [visibleHops, setVisibleHops] = useState([]);
@@ -114,7 +112,7 @@ export default function Dashboard() {
     };
 
     useEffect(() => {
-        const socket = io(SOCKET_URL);
+        const socket = io();
 
         socket.on('connect', () => {
             setConnected(true);
@@ -162,7 +160,7 @@ export default function Dashboard() {
             {/* ── Top Header ── */}
             <div style={styles.header}>
                 <div style={styles.headerLeft}>
-                    <div style={styles.logo}>⬡ CIVIL-MESH</div>
+                    <div style={styles.logo}>⬡ MESHGUARD</div>
                     <div style={styles.tagline}>Decentralized Swarm Intelligence Network</div>
                 </div>
                 <div style={styles.headerRight}>

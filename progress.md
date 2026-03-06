@@ -1,4 +1,4 @@
-# Civil-Mesh Progress Log
+# MeshGuard Progress Log
 
 ## Session: 2026-03-06
 

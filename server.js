@@ -19,7 +19,7 @@ const io = new Server(server, {
 
 // Health check endpoint
 app.get('/status', (req, res) => {
-  res.json({ status: 'Civil-Mesh Backend Online', timestamp: new Date().toISOString() });
+  res.json({ status: 'MeshGuard Backend Online', timestamp: new Date().toISOString() });
 });
 
 // Generate swarm nodes once at startup -> shared between all clients
@@ -29,14 +29,14 @@ const swarmNodes = generateNodes(150);
 const BASE_NODE = swarmNodes[0];
 
 io.on('connection', (socket) => {
-  console.log(`[Civil-Mesh] User connected: ${socket.id}`);
+  console.log(`[MeshGuard] User connected: ${socket.id}`);
 
   // Task 3: Emit the swarm matrix to the newly connected client
   socket.emit('matrix_sync', { nodes: swarmNodes, base: BASE_NODE });
 
   // Task 4: Listen for SOS trigger from the mobile app
   socket.on('trigger_sos', (payload) => {
-    console.log(`[Civil-Mesh] SOS received from ${socket.id}:`, payload);
+    console.log(`[MeshGuard] SOS received from ${socket.id}:`, payload);
 
     const { lat, lng, type } = payload;
 
@@ -51,16 +51,16 @@ io.on('connection', (socket) => {
       timestamp: new Date().toISOString(),
     });
 
-    console.log(`[Civil-Mesh] Trace computed: ${trace.length} hops`);
+    console.log(`[MeshGuard] Trace computed: ${trace.length} hops`);
   });
 
   socket.on('disconnect', () => {
-    console.log(`[Civil-Mesh] User disconnected: ${socket.id}`);
+    console.log(`[MeshGuard] User disconnected: ${socket.id}`);
   });
 });
 
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
-  console.log(`\n🌐 Civil-Mesh Backend running on http://localhost:${PORT}`);
+  console.log(`\n🌐 MeshGuard Backend running on http://localhost:${PORT}`);
   console.log(`📡 ${swarmNodes.length} virtual citizen nodes active in swarm matrix\n`);
 });

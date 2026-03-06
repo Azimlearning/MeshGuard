@@ -1,5 +1,5 @@
 /**
- * Civil-Mesh Swarm Engine
+ * MeshGuard Swarm Engine
  * Handles virtual node generation and the decentralized mesh routing algorithm.
  * Simulates a gossip/flood routing protocol with TTL to prevent infinite bouncing.
  */

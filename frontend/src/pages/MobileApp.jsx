@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 
-const SOCKET_URL = 'http://localhost:3001';
-
 const EMERGENCY_TYPES = [
     { id: 'FIRE', emoji: '🔥', label: 'Fire', color: '#ff6633' },
     { id: 'TRAPPED', emoji: '🚧', label: 'Trapped', color: '#ffaa00' },
@@ -20,7 +18,7 @@ export default function MobileApp() {
     const socketRef = useRef(null);
 
     useEffect(() => {
-        const socket = io(SOCKET_URL);
+        const socket = io();
         socketRef.current = socket;
 
         socket.on('connect', () => {
@@ -69,7 +67,7 @@ export default function MobileApp() {
 
             {/* ── Status Bar ── */}
             <div style={styles.statusBar}>
-                <div style={styles.appName}>⬡ CIVIL-MESH</div>
+                <div style={styles.appName}>⬡ MESHGUARD</div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <div style={{ ...styles.connDot, background: connected ? '#00ff88' : '#ffaa00' }} />
                     <span style={styles.connText}>

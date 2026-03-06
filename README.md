@@ -1,4 +1,4 @@
-# ⬡ MeshGuard (formerly Civil-Mesh)
+# ⬡ MeshGuard
 > **"When the towers fall, the people become the network."**
 
 MeshGuard is a proof-of-concept application built for the **V-HACK 2026 Hackathon**. It tackles the "First Responder of the Future" challenge by demonstrating a **Decentralized Swarm Intelligence Network**.
@@ -38,7 +38,7 @@ npm install
 # Start the Node server
 npm start
 ```
-*Expected output:* `🌐 Civil-Mesh Backend running on http://localhost:3001` and `📡 150 virtual citizen nodes active in swarm matrix`
+*Expected output:* `🌐 MeshGuard Backend running on http://localhost:3001` and `📡 150 virtual citizen nodes active in swarm matrix`
 
 ### 2. Start the Frontend UI (Terminal 2)
 ```bash
