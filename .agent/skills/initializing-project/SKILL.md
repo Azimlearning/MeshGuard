@@ -1,27 +1,28 @@
 ---
 name: initializing-project
-description: Initializes a new project with proper guidelines and structure using the B.L.A.S.T. protocol. Use this skill only once during the first initialization, preferably after the initial brainstorming phase when the project trajectory is decided.
+description: Initializes a new project with proper guidelines and structure using the B.L.A.S.T. protocol. Trigger this only once during the first initialization of a brand new project, immediately after the brainstorming phase is complete and the core trajectory is decided.
 ---
 
 # Project Initialization (B.L.A.S.T System)
 
 ## When to use this skill
-- During the first initialization of a project, after the initial brainstorming phase sets the trajectory.
-- The user asks to initialize a project securely with proper guidelines, architecture, and maintainable structure.
+- During the very first setup of a new project, right after the `brainstorming` skill has concluded.
+- When the user asks to initialize a project securely with proper guidelines, architecture, and maintainable structure.
+- **Do NOT** use this skill for adding features to an existing project.
 
 ## Workflow
-- [ ] 1. **Phase 1: Blueprint & Discovery**
-    - Ask the user the 5 Discovery Questions (North Star, Integrations, Source of Truth, Delivery Payload, Behavioral Rules).
+- [ ] **1. Phase 1: Blueprint & Discovery**
+    - Ask the user the 5 Discovery Questions (North Star, Integrations, Source of Truth, Delivery Payload, Behavioral Rules) to finalize the initial brainstorming outputs.
     - Wait for the user to answer the questions.
     - Define the JSON Data Schema (Input/Output shapes) if applicable. Coding does not begin until the Payload shape is confirmed.
-    - Optionally research helpful resources on GitHub for the project.
-- [ ] 2. **Phase 2: Sequential Documentation Drafting**
+- [ ] **2. Phase 2: Sequential Documentation Drafting**
     - **Crucial Rule**: You must create each of the following documents *one at a time*. After drafting each document, present it to the user and **WAIT** for their approval before moving to the next.
     - [ ] Create `prd.md` -> Wait for validation.
     - [ ] Create `architecture.md` -> Wait for validation.
     - [ ] Create `ai_rules.md` (Project Constitution / Behavioral rules / Constraints) -> Wait for validation.
+    - [ ] Create `file_structure.md` (Project Structure Guide) -> Wait for validation.
     - [ ] Create `plan.md` -> Wait for validation.
-- [ ] 3. **Phase 3: Directory Structure Setup**
+- [ ] **3. Phase 3: Directory Structure Setup**
     - Create the required A.N.T 3-layer architecture folders:
         - `architecture/` (Technical SOPs)
         - `tools/` (Python/JS scripts, atomic and testable)
@@ -38,6 +39,7 @@ You act as the **System Pilot**. Your mission is to build deterministic, self-he
     - Discovery Questions are answered.
     - The Data Schema is defined.
     - `plan.md` has an approved Blueprint.
+- **Alignment**: This skill is a one-time process for *new projects*. It seamlessly picks up where the `brainstorming` skill left off by finalizing the architectural blueprint and structuring the repository. 
 
 ### 🏗️ Phase 1: B - Blueprint (Vision & Logic)
 **Discovery Questions:**
@@ -77,6 +79,7 @@ You act as the **System Pilot**. Your mission is to build deterministic, self-he
 ├── prd.md             # Project Requirements
 ├── architecture.md    # System Architecture
 ├── ai_rules.md        # AI Constraints & Golden Rules
+├── file_structure.md  # Project Structure Guide & Hierarchy Rules
 ├── plan.md            # Actionable implementation steps
 ├── architecture/      # Layer 1: SOPs (The "How-To")
 ├── tools/             # Layer 3: Execute Scripts (The "Engines")

@@ -3,6 +3,8 @@ const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const { generateNodes, computeRoute } = require('./src/swarmEngine');
+const { admitSos, getAllHospitalStrains, findBestHospital } = require('./src/strainModel');
+const { HOSPITALS } = require('./src/data/hospitals');
 
 const app = express();
 app.use(cors());
@@ -22,36 +24,60 @@ app.get('/status', (req, res) => {
   res.json({ status: 'MeshGuard Backend Online', timestamp: new Date().toISOString() });
 });
 
-// Generate swarm nodes once at startup -> shared between all clients
-const swarmNodes = generateNodes(150);
+// Hospital strain API endpoint (for direct polling if needed)
+app.get('/hospitals', (req, res) => {
+  res.json(getAllHospitalStrains());
+});
 
-// The designated "First Responder Base" node (index 0)
-const BASE_NODE = swarmNodes[0];
+// Generate swarm nodes (citizen nodes only, no base — hospitals are the bases now)
+const swarmNodes = generateNodes(150);
 
 io.on('connection', (socket) => {
   console.log(`[MeshGuard] User connected: ${socket.id}`);
 
-  // Task 3: Emit the swarm matrix to the newly connected client
-  socket.emit('matrix_sync', { nodes: swarmNodes, base: BASE_NODE });
+  // Send both swarm nodes and hospital data to new clients
+  socket.emit('matrix_sync', {
+    nodes: swarmNodes,
+    hospitals: getAllHospitalStrains(),
+  });
 
-  // Task 4: Listen for SOS trigger from the mobile app
+  // Listen for SOS trigger from the mobile app
   socket.on('trigger_sos', (payload) => {
     console.log(`[MeshGuard] SOS received from ${socket.id}:`, payload);
 
     const { lat, lng, type } = payload;
 
-    // Compute the routing trace via swarm engine
-    const trace = computeRoute(swarmNodes, { lat, lng }, BASE_NODE);
+    // === PREDICTIVE MODEL: find the best available hospital ===
+    const targetHospital = findBestHospital({ lat, lng });
 
-    // Broadcast the trace to ALL connected clients (including the dashboard)
+    // Register the admission against the chosen hospital's load
+    admitSos(targetHospital.id);
+
+    // Compute the routing trace via swarm engine toward the target hospital
+    const trace = computeRoute(swarmNodes, { lat, lng }, targetHospital);
+
+    // Get the updated strain snapshot after admission
+    const hospitalStrains = getAllHospitalStrains();
+
+    // Broadcast the trace + updated hospital strains to ALL connected clients
     io.emit('mesh_trace', {
       origin: { lat, lng },
       type: type || 'SOS',
       trace,
       timestamp: new Date().toISOString(),
+      targetHospital: {
+        id: targetHospital.id,
+        label: targetHospital.label,
+        status: targetHospital.status,
+      },
     });
 
-    console.log(`[MeshGuard] Trace computed: ${trace.length} hops`);
+    // Broadcast the updated hospital strain data
+    io.emit('hospital_strain_update', hospitalStrains);
+
+    console.log(
+      `[MeshGuard] Routed to: ${targetHospital.label} (Strain: ${targetHospital.status}) | Trace: ${trace.length} hops`
+    );
   });
 
   socket.on('disconnect', () => {
@@ -62,5 +88,6 @@ io.on('connection', (socket) => {
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   console.log(`\n🌐 MeshGuard Backend running on http://localhost:${PORT}`);
-  console.log(`📡 ${swarmNodes.length} virtual citizen nodes active in swarm matrix\n`);
+  console.log(`📡 ${swarmNodes.length} virtual citizen nodes active in swarm matrix`);
+  console.log(`🏥 ${HOSPITALS.length} hospitals online with strain prediction model\n`);
 });

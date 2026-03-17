@@ -9,6 +9,27 @@ In disaster scenarios where traditional communication infrastructure (cell tower
 
 ## 🏗️ Architecture Under the Hood
 
+```mermaid
+flowchart TD
+    subgraph FE ["Frontend — React + Vite (Port 4000)"]
+        M["📱 Mobile App\n/mobile"]
+        D["🖥️ Command Dashboard\n/dashboard"]
+    end
+
+    subgraph BE ["Backend — Node.js + Express (Port 3001)"]
+        SW["⚡ Swarm Engine\nswarmEngine.js\n150 Virtual Citizen Nodes"]
+        RT["🔀 Mesh Router\nGreedy Hop Algorithm\n(TTL: 12 hops)"]
+    end
+
+    M -- "trigger_sos event\n{ lat, lng, type }" --> WS
+    WS["🔌 Socket.io\nWebSocket Layer"] -- "mesh_trace event" --> D
+    WS -- "matrix_sync event" --> M
+    WS -- "matrix_sync event" --> D
+    BE -- "Serves static build" --> FE
+    SW -- "Generates 150 nodes" --> RT
+    RT -- "Calculates hop path" --> WS
+```
+
 MeshGuard uses a monorepo setup, running two interconnected applications:
 
 1. **The Backend (Swarm Engine):** A Node.js server (`server.js`). It acts as the "brain". On startup, it generates a virtual environment of 150 offline "citizen nodes" scattered around the city. It handles the greedy hop-by-hop mesh routing logic that simulates a gossip protocol.

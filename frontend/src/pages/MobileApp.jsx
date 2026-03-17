@@ -15,6 +15,7 @@ export default function MobileApp() {
     const [hopCount, setHopCount] = useState(0);
     const [peerCount, setPeerCount] = useState(0);
     const [lastEvent, setLastEvent] = useState(null);
+    const [assignedHospital, setAssignedHospital] = useState(null);
     const socketRef = useRef(null);
 
     useEffect(() => {
@@ -30,9 +31,10 @@ export default function MobileApp() {
             setPeerCount(Math.min(nodes.length, Math.floor(Math.random() * 8) + 3));
         });
 
-        socket.on('mesh_trace', ({ trace, type, timestamp }) => {
+        socket.on('mesh_trace', ({ trace, type, timestamp, targetHospital }) => {
             setHopCount(trace.length);
             setStatus('sent');
+            setAssignedHospital(targetHospital || null);
             setLastEvent({ type, hops: trace.length, time: new Date(timestamp).toLocaleTimeString() });
             setTimeout(() => setStatus('idle'), 4000);
         });
@@ -113,6 +115,7 @@ export default function MobileApp() {
             <div style={styles.btnWrapper}>
                 <button
                     id="sos-button"
+                    aria-label={`Broadcast ${selectedType} emergency signal`}
                     style={{
                         ...styles.sosBtn,
                         animation: isSending
@@ -170,6 +173,13 @@ export default function MobileApp() {
                         <span style={{ color: 'var(--text-muted)' }}>Time</span>
                         <span style={{ color: '#00ffcc' }}>{lastEvent.time}</span>
                     </div>
+                    {assignedHospital && (
+                        <div style={{ ...styles.eventRow, flexDirection: 'column', gap: '2px', marginTop: '4px', paddingTop: '8px', borderTop: '1px solid rgba(0,255,136,0.15)' }}>
+                            <span style={{ color: 'var(--text-muted)', fontSize: '10px', letterSpacing: '1px' }}>ASSIGNED FACILITY</span>
+                            <span style={{ color: '#00ff88', fontSize: '11px', lineHeight: 1.4 }}>🏥 {assignedHospital.label}</span>
+                            <span style={{ color: assignedHospital.status === 'CRITICAL' ? '#ff3366' : assignedHospital.status === 'WARNING' ? '#ffc107' : '#00ff88', fontSize: '10px', fontWeight: 700 }}>● {assignedHospital.status}</span>
+                        </div>
+                    )}
                 </div>
             )}
 
@@ -197,7 +207,7 @@ const styles = {
     scanline: {
         position: 'fixed',
         inset: 0,
-        background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,170,255,0.012) 2px, rgba(0,170,255,0.012) 4px)',
+        background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,170,255,0.007) 2px, rgba(0,170,255,0.007) 4px)',
         pointerEvents: 'none',
         zIndex: 10,
     },
@@ -247,7 +257,8 @@ const styles = {
         borderRadius: '12px',
         cursor: 'pointer',
         display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px',
-        transition: 'all 0.2s',
+        transition: 'all 0.2s ease',
+        outline: 'none',
     },
     typeEmoji: { fontSize: '24px' },
     typeLabel: { fontSize: '12px', fontWeight: 600, letterSpacing: '1px' },
@@ -279,7 +290,8 @@ const styles = {
         borderRadius: '12px',
         padding: '16px',
         display: 'flex', flexDirection: 'column', gap: '8px',
-        animation: 'slide-in 0.4s ease',
+        animation: 'fade-up 0.35s ease',
+        backdropFilter: 'blur(10px)',
     },
     eventTitle: { fontSize: '12px', fontWeight: 700, color: '#00ff88', letterSpacing: '1px', marginBottom: '4px' },
     eventRow: { display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontFamily: 'JetBrains Mono' },
