@@ -72,7 +72,9 @@ npm run app
 ### 2. Start the Frontend UI (Terminal 2)
 ```bash
 # Start the Vite development server exposed to your local network
-npm run dev:frontend
+npm run dev:frontend 
+or 
+cd frontend & npm run dev
 ```
 *Expected output:* Note the `Network:` IP address (e.g., `http://172.20.10.3:4000/mobile`). Can be used in any broser but preferbly mobile device since ui is made for mobile device (ensure devices are in the same Wi-Fi network / Personal Hotspot).
 
