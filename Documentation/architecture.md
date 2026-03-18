@@ -127,12 +127,28 @@ Implements a **greedy gossip-forwarding** algorithm:
 3. Force-append `base` if not the last hop
 4. Returns ordered `Hop[]` array representing the routing path
 
-**Complexity:** O(n²) — acceptable for n=150 in a demo context  
-**Edge case:** If all nodes are visited before reaching base, trace ends and base is appended manually
+---
+
+## 7. Predictive Strain Model
+
+**File:** `server.js` (Logic)
+
+MeshGuard integrates real-world data to prevent medical bottlenecks.
+
+### Hospital Data Source
+- **Provider:** KKMNow / OpenDOSM
+- **Scale:** 5 Major Hospitals in Kuala Lumpur (HKL, HCTM, etc.)
+- **Metrics:** Total bed capacity, emergency department baseline load.
+
+### Strain Calculation
+The system uses an **Exponential Decay Algorithm** to calculate live load based on incoming SOS frequency:
+- **Decay Factor:** `e^(−ln2 × age_ms / 60000)` (60s half-life for emergency events).
+- **Strain Ratio:** `Σ(decay_factor_per_event) / hospital_capacity`.
+- **Intelligent Rerouting:** If `strain_ratio > 0.9` (90% capacity), the `swarmEngine` automatically diverts new SOS traces to the next nearest stable facility.
 
 ---
 
-## 7. Directory Structure
+## 8. Directory Structure
 
 ```text
 vhack/
@@ -185,6 +201,8 @@ vhack/
 | Mapping | React-Leaflet / Leaflet | ^4/^1 | Free, open-source, offline-capable |
 | Map Tiles | CartoDB DarkMatter | CDN | No API key, dark theme |
 | CSS | Vanilla CSS / Tailwind | — | Inline styles + utility classes |
+| Data | KKMNow / OpenDOSM | API/JSON | Official Malaysian Public Health data |
+| Algorithm | Exponential Decay | — | Predictive strain modeling |
 | Fonts | JetBrains Mono | Google Fonts | Terminal aesthetic |
 
 ---
